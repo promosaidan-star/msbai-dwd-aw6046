@@ -1,0 +1,82 @@
+171 archives; 1 already staged; 170 to do
+=== 1/170 ===
+[2013-citibike-tripdata.zip] downloading 330 MB ...
+  2013-citibike-tripdata/201309-citibike-tripdata.csv -> legacy/NYC/201309 rows=1,034,359 cols=15
+  2013-citibike-tripdata/201311-citibike-tripdata.csv -> legacy/NYC/201311 rows=675,774 cols=15
+  2013-citibike-tripdata/201307-citibike-tripdata.csv -> legacy/NYC/201307 rows=843,416 cols=15
+  2013-citibike-tripdata/201308-citibike-tripdata.csv -> legacy/NYC/201308 rows=1,001,958 cols=15
+  2013-citibike-tripdata/201306-citibike-tripdata.csv -> legacy/NYC/201306 rows=577,703 cols=15
+  2013-citibike-tripdata/201310-citibike-tripdata.csv -> legacy/NYC/201310 rows=1,037,712 cols=15
+  2013-citibike-tripdata/201312-citibike-tripdata.csv -> legacy/NYC/201312 rows=443,966 cols=15
+  2013-citibike-tripdata/12_December/201312-citibike-tripdata_1.csv -> legacy/NYC/201312 rows=443,966 cols=15
+  2013-citibike-tripdata/11_November/201311-citibike-tripdata_1.csv -> legacy/NYC/201311 rows=675,774 cols=15
+  2013-citibike-tripdata/7_July/201307-citibike-tripdata_1.csv -> legacy/NYC/201307 rows=843,416 cols=15
+  2013-citibike-tripdata/10_October/201310-citibike-tripdata_2.csv -> legacy/NYC/201310 rows=37,712 cols=15
+  2013-citibike-tripdata/10_October/201310-citibike-tripdata_1.csv -> legacy/NYC/201310 rows=1,000,000 cols=15
+  2013-citibike-tripdata/9_September/201309-citibike-tripdata_2.csv -> legacy/NYC/201309 rows=34,359 cols=15
+  2013-citibike-tripdata/9_September/201309-citibike-tripdata_1.csv -> legacy/NYC/201309 rows=1,000,000 cols=15
+  2013-citibike-tripdata/8_August/201308-citibike-tripdata_1.csv -> legacy/NYC/201308 rows=1,000,000 cols=15
+  2013-citibike-tripdata/8_August/201308-citibike-tripdata_2.csv -> legacy/NYC/201308 rows=1,958 cols=15
+  2013-citibike-tripdata/6_June/201306-citibike-tripdata_1.csv -> legacy/NYC/201306 rows=577,703 cols=15
+  dedup NYC/201309: kept flat (1,034,359 rows), skipped 2 duplicate part file(s)
+  dedup NYC/201311: kept flat (675,774 rows), skipped 1 duplicate part file(s)
+  dedup NYC/201307: kept flat (843,416 rows), skipped 1 duplicate part file(s)
+  dedup NYC/201308: kept flat (1,001,958 rows), skipped 2 duplicate part file(s)
+  dedup NYC/201306: kept flat (577,703 rows), skipped 1 duplicate part file(s)
+  dedup NYC/201310: kept flat (1,037,712 rows), skipped 2 duplicate part file(s)
+  dedup NYC/201312: kept flat (443,966 rows), skipped 1 duplicate part file(s)
+[2013-citibike-tripdata.zip] uploading 7 files ...
+Copying file://C:\Users\ajwal\Documents\msbai-dwd-aw6046\pipeline\..\data\staging\raw\legacy\NYC\201306\201306-citibike-tripdata.csv.gz to gs://msbai-dwd-aw6046-staging/raw/legacy/NYC/201306/201306-citibike-tripdata.csv.gz
+Copying file://C:\Users\ajwal\Documents\msbai-dwd-aw6046\pipeline\..\data\staging\raw\legacy\NYC\201307\201307-citibike-tripdata.csv.gz to gs://msbai-dwd-aw6046-staging/raw/legacy/NYC/201307/201307-citibike-tripdata.csv.gz
+  
+Copying file://C:\Users\ajwal\Documents\msbai-dwd-aw6046\pipeline\..\data\staging\raw\legacy\NYC\201308\201308-citibike-tripdata.csv.gz to gs://msbai-dwd-aw6046-staging/raw/legacy/NYC/201308/201308-citibike-tripdata.csv.gz
+Copying file://C:\Users\ajwal\Documents\msbai-dwd-aw6046\pipeline\..\data\staging\raw\legacy\NYC\201309\201309-citibike-tripdata.csv.gz to gs://msbai-dwd-aw6046-staging/raw/legacy/NYC/201309/201309-citibike-tripdata.csv.gz
+Copying file://C:\Users\ajwal\Documents\msbai-dwd-aw6046\pipeline\..\data\staging\raw\legacy\NYC\201310\201310-citibike-tripdata.csv.gz to gs://msbai-dwd-aw6046-staging/raw/legacy/NYC/201310/201310-citibike-tripdata.csv.gz
+Copying file://C:\Users\ajwal\Documents\msbai-dwd-aw6046\pipeline\..\data\staging\raw\legacy\NYC\201311\201311-citibike-tripdata.csv.gz to gs://msbai-dwd-aw6046-staging/raw/legacy/NYC/201311/201311-citibike-tripdata.csv.gz
+Copying file://C:\Users\ajwal\Documents\msbai-dwd-aw6046\pipeline\..\data\staging\raw\legacy\NYC\201312\201312-citibike-tripdata.csv.gz to gs://msbai-dwd-aw6046-staging/raw/legacy/NYC/201312/201312-citibike-tripdata.csv.gz
+..............................................................................................................................................................................................................................................................................................................................................
+
+Average throughput: 5.7MiB/s
+=== 2/170 ===
+[2014-citibike-tripdata.zip] downloading 225 MB ...
+  2014-citibike-tripdata/4_April/201404-citibike-tripdata_1.csv -> legacy/NYC/201404 rows=670,780 cols=15
+  2014-citibike-tripdata/12_December/201412-citibike-tripdata_1.csv -> legacy/NYC/201412 rows=399,069 cols=15
+  2014-citibike-tripdata/11_November/201411-citibike-tripdata_1.csv -> legacy/NYC/201411 rows=529,188 cols=15
+  2014-citibike-tripdata/7_July/201407-citibike-tripdata_1.csv -> legacy/NYC/201407 rows=968,842 cols=15
+  2014-citibike-tripdata/10_October/201410-citibike-tripdata_1.csv -> legacy/NYC/201410 rows=828,711 cols=15
+  2014-citibike-tripdata/9_September/201409-citibike-tripdata_1.csv -> legacy/NYC/201409 rows=953,887 cols=15
+  2014-citibike-tripdata/8_August/201408-citibike-tripdata_1.csv -> legacy/NYC/201408 rows=963,489 cols=15
+  2014-citibike-tripdata/6_June/201406-citibike-tripdata_1.csv -> legacy/NYC/201406 rows=936,880 cols=15
+  2014-citibike-tripdata/3_March/201403-citibike-tripdata_1.csv -> legacy/NYC/201403 rows=439,117 cols=15
+  2014-citibike-tripdata/1_January/201401-citibike-tripdata_1.csv -> legacy/NYC/201401 rows=300,400 cols=15
+  2014-citibike-tripdata/2_February/201402-citibike-tripdata_1.csv -> legacy/NYC/201402 rows=224,736 cols=15
+  2014-citibike-tripdata/5_May/201405-citibike-tripdata_1.csv -> legacy/NYC/201405 rows=866,117 cols=15
+[2014-citibike-tripdata.zip] uploading 12 files ...
+Copying file://C:\Users\ajwal\Documents\msbai-dwd-aw6046\pipeline\..\data\staging\raw\legacy\NYC\201401\201401-citibike-tripdata_1.csv.gz to gs://msbai-dwd-aw6046-staging/raw/legacy/NYC/201401/201401-citibike-tripdata_1.csv.gz
+Copying file://C:\Users\ajwal\Documents\msbai-dwd-aw6046\pipeline\..\data\staging\raw\legacy\NYC\201402\201402-citibike-tripdata_1.csv.gz to gs://msbai-dwd-aw6046-staging/raw/legacy/NYC/201402/201402-citibike-tripdata_1.csv.gz
+  
+Copying file://C:\Users\ajwal\Documents\msbai-dwd-aw6046\pipeline\..\data\staging\raw\legacy\NYC\201403\201403-citibike-tripdata_1.csv.gz to gs://msbai-dwd-aw6046-staging/raw/legacy/NYC/201403/201403-citibike-tripdata_1.csv.gz
+Copying file://C:\Users\ajwal\Documents\msbai-dwd-aw6046\pipeline\..\data\staging\raw\legacy\NYC\201404\201404-citibike-tripdata_1.csv.gz to gs://msbai-dwd-aw6046-staging/raw/legacy/NYC/201404/201404-citibike-tripdata_1.csv.gz
+Copying file://C:\Users\ajwal\Documents\msbai-dwd-aw6046\pipeline\..\data\staging\raw\legacy\NYC\201405\201405-citibike-tripdata_1.csv.gz to gs://msbai-dwd-aw6046-staging/raw/legacy/NYC/201405/201405-citibike-tripdata_1.csv.gz
+Copying file://C:\Users\ajwal\Documents\msbai-dwd-aw6046\pipeline\..\data\staging\raw\legacy\NYC\201406\201406-citibike-tripdata_1.csv.gz to gs://msbai-dwd-aw6046-staging/raw/legacy/NYC/201406/201406-citibike-tripdata_1.csv.gz
+Copying file://C:\Users\ajwal\Documents\msbai-dwd-aw6046\pipeline\..\data\staging\raw\legacy\NYC\201407\201407-citibike-tripdata_1.csv.gz to gs://msbai-dwd-aw6046-staging/raw/legacy/NYC/201407/201407-citibike-tripdata_1.csv.gz
+Copying file://C:\Users\ajwal\Documents\msbai-dwd-aw6046\pipeline\..\data\staging\raw\legacy\NYC\201408\201408-citibike-tripdata_1.csv.gz to gs://msbai-dwd-aw6046-staging/raw/legacy/NYC/201408/201408-citibike-tripdata_1.csv.gz
+Copying file://C:\Users\ajwal\Documents\msbai-dwd-aw6046\pipeline\..\data\staging\raw\legacy\NYC\201409\201409-citibike-tripdata_1.csv.gz to gs://msbai-dwd-aw6046-staging/raw/legacy/NYC/201409/201409-citibike-tripdata_1.csv.gz
+Copying file://C:\Users\ajwal\Documents\msbai-dwd-aw6046\pipeline\..\data\staging\raw\legacy\NYC\201410\201410-citibike-tripdata_1.csv.gz to gs://msbai-dwd-aw6046-staging/raw/legacy/NYC/201410/201410-citibike-tripdata_1.csv.gz
+Copying file://C:\Users\ajwal\Documents\msbai-dwd-aw6046\pipeline\..\data\staging\raw\legacy\NYC\201411\201411-citibike-tripdata_1.csv.gz to gs://msbai-dwd-aw6046-staging/raw/legacy/NYC/201411/201411-citibike-tripdata_1.csv.gz
+Copying file://C:\Users\ajwal\Documents\msbai-dwd-aw6046\pipeline\..\data\staging\raw\legacy\NYC\201412\201412-citibike-tripdata_1.csv.gz to gs://msbai-dwd-aw6046-staging/raw/legacy/NYC/201412/201412-citibike-tripdata_1.csv.gz
+Resuming upload for raw/legacy/NYC/201405/201405-citibike-tripdata_1.csv.gz
+Resuming upload for raw/legacy/NYC/201409/201409-citibike-tripdata_1.csv.gz
+Resuming upload for raw/legacy/NYC/201408/201408-citibike-tripdata_1.csv.gz
+Resuming upload for raw/legacy/NYC/201411/201411-citibike-tripdata_1.csv.gz
+Resuming upload for raw/legacy/NYC/201412/201412-citibike-tripdata_1.csv.gz
+Resuming upload for raw/legacy/NYC/201403/201403-citibike-tripdata_1.csv.gz
+Resuming upload for raw/legacy/NYC/201401/201401-citibike-tripdata_1.csv.gz
+Resuming upload for raw/legacy/NYC/201410/201410-citibike-tripdata_1.csv.gz
+Resuming upload for raw/legacy/NYC/201406/201406-citibike-tripdata_1.csv.gz
+Resuming upload for raw/legacy/NYC/201407/201407-citibike-tripdata_1.csv.gz
+Resuming upload for raw/legacy/NYC/201404/201404-citibike-tripdata_1.csv.gz
+Removing gs://msbai-dwd-aw6046-staging/raw/legacy/NYC/201401/201401-citibike-tripdata_1.csv.gz#1783897185072722...
+ERROR: Task 'gs://msbai-dwd-aw6046-staging/raw/legacy/NYC/201401/201401-citibike-tripdata_1.csv.gz' failed: HashMismatchError('Source hash k2JgvSOL5vbQVTgnktbB6Q== does not match destination hash 0QvOW/5rOJiWbJzrBT8ZGg== for object gs://msbai-dwd-aw6046-staging/raw/legacy/NYC/201401/201401-citibike-tripdata_1.csv.gz#1783897185072722.')
+Removing gs://msbai-dwd-aw6046-staging/raw/legacy/NYC/201412/201412-citibike-tripdata_1.csv.gz#1783897195419203...
+ERROR: Task 'gs://msbai-dwd-aw6046-staging/raw/legacy/NYC/201412/201412-citibike-tripdata_1.csv.gz' failed: HashMismatchError('Source hash gt30GmQBKkDasxa27Es4ig== does not match destination hash GtdUsvDQSPlzEwExFefe8A== for object gs://msbai-dwd-aw6046-staging/raw/legacy/NYC/201412/201412-citibike-tripdata_1.csv.gz#1783897195419203.')
