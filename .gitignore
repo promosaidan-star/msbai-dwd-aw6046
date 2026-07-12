@@ -1,0 +1,10 @@
+# local data staging — never commit trip data
+data/
+*.zip
+*.csv.gz
+__pycache__/
+.venv/
+.streamlit/secrets.toml
+
+# but keep committed evidence CSVs
+!docs/**/*.csv
