@@ -144,7 +144,35 @@ def stage_source(key, size):
             })
             print(f"  {member} -> {era}/{region}/{ym} rows={rows:,} cols={n_cols}", flush=True)
 
-    print(f"[{key}] uploading {len(entries)} files ...", flush=True)
+    # --- intra-source duplicate guard -------------------------------------------------
+    # Annual bundles ship the same month TWICE: a flat root CSV (YYYYMM-citibike-tripdata.csv)
+    # AND month-folder part files (..._1.csv, _2.csv). Keep ONE canonical representation:
+    # the flat file when both exist and row counts agree; hard-error if they disagree.
+    by_month = {}
+    for e in entries:
+        by_month.setdefault((e["region"], e["yyyymm"]), []).append(e)
+    for (region_, ym), es in by_month.items():
+        flats = [e for e in es if not re.search(r"_\d+\.csv$", os.path.basename(e["member"]))]
+        parts = [e for e in es if re.search(r"_\d+\.csv$", os.path.basename(e["member"]))]
+        if flats and parts:
+            flat_rows = sum(e["rows"] for e in flats)
+            part_rows = sum(e["rows"] for e in parts)
+            if flat_rows != part_rows:
+                raise RuntimeError(
+                    f"{key} {region_}/{ym}: flat rows {flat_rows:,} != parts rows {part_rows:,} "
+                    "— representations are NOT duplicates; needs human review")
+            for e in parts:
+                gz_local = os.path.join(src_dir, e["era"], region_, ym,
+                                        re.sub(r"[^A-Za-z0-9._-]", "_", os.path.basename(e["member"])) + ".gz")
+                if os.path.exists(gz_local):
+                    os.remove(gz_local)
+                e["status"] = "skipped_duplicate"
+                e["gcs_path"] = ""
+            print(f"  dedup {region_}/{ym}: kept flat ({flat_rows:,} rows), "
+                  f"skipped {len(parts)} duplicate part file(s)", flush=True)
+
+    n_up = sum(1 for e in entries if e["status"] == "staged")
+    print(f"[{key}] uploading {n_up} files ...", flush=True)
     subprocess.run(
         [GCLOUD, "storage", "cp", "-r", os.path.join(src_dir, "*"), BUCKET + "/raw/",
          "--project", PROJECT, "--quiet"],

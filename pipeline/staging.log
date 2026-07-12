@@ -1,8 +1,0 @@
-171 archives; 1 already staged; 170 to do
-=== 1/170 ===
-[2013-citibike-tripdata.zip] downloading 330 MB ...
-  2013-citibike-tripdata/201309-citibike-tripdata.csv -> legacy/NYC/201309 rows=1,034,359 cols=15
-  2013-citibike-tripdata/201311-citibike-tripdata.csv -> legacy/NYC/201311 rows=675,774 cols=15
-  2013-citibike-tripdata/201307-citibike-tripdata.csv -> legacy/NYC/201307 rows=843,416 cols=15
-  2013-citibike-tripdata/201308-citibike-tripdata.csv -> legacy/NYC/201308 rows=1,001,958 cols=15
-  2013-citibike-tripdata/201306-citibike-tripdata.csv -> legacy/NYC/201306 rows=577,703 cols=15
