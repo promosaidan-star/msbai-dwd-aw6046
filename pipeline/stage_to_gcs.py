@@ -171,25 +171,35 @@ def stage_source(key, size):
             print(f"  dedup {region_}/{ym}: kept flat ({flat_rows:,} rows), "
                   f"skipped {len(parts)} duplicate part file(s)", flush=True)
 
-    n_up = sum(1 for e in entries if e["status"] == "staged")
-    print(f"[{key}] uploading {n_up} files ...", flush=True)
-    # gcloud storage's multiprocessing upload on Windows throws spurious HashMismatchErrors;
-    # force a single process (threads are fine) — scoped to this subprocess only, so the
-    # user's global gcloud config is untouched. Retry once on transient failure.
+    staged = [e for e in entries if e["status"] == "staged"]
+    print(f"[{key}] uploading {len(staged)} files ...", flush=True)
+    # One file per invocation, fully serial, 3 tries with backoff: gcloud storage's parallel
+    # upload paths (processes AND threads) are unreliable on Windows/flaky links
+    # (HashMismatchError, empty GcsApiError). Env is scoped here; global config untouched.
+    # RESUMABLE_THRESHOLD above any file size forces one-shot uploads: re-runs re-gzip files
+    # (gzip embeds mtime, bytes change), and gcloud resuming a stale session against changed
+    # content is what produced HashMismatch / GcsApiError('') / HTTPError 400.
     env = dict(os.environ,
                CLOUDSDK_STORAGE_PROCESS_COUNT="1",
-               CLOUDSDK_STORAGE_THREAD_COUNT="8")
-    for attempt in (1, 2):
-        r = subprocess.run(
-            [GCLOUD, "storage", "cp", "-r", os.path.join(src_dir, "*"), BUCKET + "/raw/",
-             "--project", PROJECT, "--quiet"],
-            shell=False, env=env)
-        if r.returncode == 0:
-            break
-        print(f"  upload attempt {attempt} failed (rc={r.returncode})"
-              + ("; retrying" if attempt == 1 else ""), flush=True)
-    else:
-        raise RuntimeError(f"{key}: upload failed twice")
+               CLOUDSDK_STORAGE_THREAD_COUNT="1",
+               CLOUDSDK_STORAGE_RESUMABLE_THRESHOLD=str(10 * 1024 ** 3))
+    import time
+    for e in staged:
+        rel = os.path.join(e["era"], e["region"], e["yyyymm"],
+                           os.path.basename(e["gcs_path"]))
+        local = os.path.join(src_dir, rel)
+        for attempt in range(1, 4):
+            r = subprocess.run(
+                [GCLOUD, "storage", "cp", local, e["gcs_path"], "--project", PROJECT, "--quiet"],
+                shell=False, env=env)
+            if r.returncode == 0:
+                break
+            wait = 5 * attempt
+            print(f"  upload {rel} attempt {attempt} failed (rc={r.returncode}); "
+                  f"waiting {wait}s", flush=True)
+            time.sleep(wait)
+        else:
+            raise RuntimeError(f"{key}: upload failed 3x for {rel}")
     entries.append({"source_key": key, "member": "", "region": region, "yyyymm": "", "era": "",
                     "n_cols": "", "rows": "", "gz_bytes": "", "gcs_path": "",
                     "status": "source_done"})
