@@ -173,10 +173,23 @@ def stage_source(key, size):
 
     n_up = sum(1 for e in entries if e["status"] == "staged")
     print(f"[{key}] uploading {n_up} files ...", flush=True)
-    subprocess.run(
-        [GCLOUD, "storage", "cp", "-r", os.path.join(src_dir, "*"), BUCKET + "/raw/",
-         "--project", PROJECT, "--quiet"],
-        check=True, shell=False)
+    # gcloud storage's multiprocessing upload on Windows throws spurious HashMismatchErrors;
+    # force a single process (threads are fine) — scoped to this subprocess only, so the
+    # user's global gcloud config is untouched. Retry once on transient failure.
+    env = dict(os.environ,
+               CLOUDSDK_STORAGE_PROCESS_COUNT="1",
+               CLOUDSDK_STORAGE_THREAD_COUNT="8")
+    for attempt in (1, 2):
+        r = subprocess.run(
+            [GCLOUD, "storage", "cp", "-r", os.path.join(src_dir, "*"), BUCKET + "/raw/",
+             "--project", PROJECT, "--quiet"],
+            shell=False, env=env)
+        if r.returncode == 0:
+            break
+        print(f"  upload attempt {attempt} failed (rc={r.returncode})"
+              + ("; retrying" if attempt == 1 else ""), flush=True)
+    else:
+        raise RuntimeError(f"{key}: upload failed twice")
     entries.append({"source_key": key, "member": "", "region": region, "yyyymm": "", "era": "",
                     "n_cols": "", "rows": "", "gz_bytes": "", "gcs_path": "",
                     "status": "source_done"})
