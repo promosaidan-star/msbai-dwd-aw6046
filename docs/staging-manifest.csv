@@ -1,0 +1,3 @@
+source_key,member,region,yyyymm,era,n_cols,rows,gz_bytes,gcs_path,status
+JC-201509-citibike-tripdata.csv.zip,JC-201509-citibike-tripdata.csv,JC,201509,legacy,15,6668,127508,gs://msbai-dwd-aw6046-staging/raw/legacy/JC/201509/JC-201509-citibike-tripdata.csv.gz,staged
+JC-201509-citibike-tripdata.csv.zip,,JC,,,,,,,source_done
