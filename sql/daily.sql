@@ -18,7 +18,10 @@ FROM `msbai-dwd-aw6046.citibike.v_trips_clean`
 WHERE trip_day IS NOT NULL
 GROUP BY trip_day, region, rider_type;
 
+-- Partition granularity is MONTH: BigQuery caps a table at 4,000 partitions and the
+-- 2013-2026 history spans ~4,768 days; 157 monthly partitions fit with headroom and
+-- prune just as well for a ~20k-row summary table.
 CREATE OR REPLACE TABLE `msbai-dwd-aw6046.citibike.daily_trips`
-PARTITION BY trip_day
+PARTITION BY DATE_TRUNC(trip_day, MONTH)
 AS
 SELECT * FROM `msbai-dwd-aw6046.citibike.v_daily_summary`;

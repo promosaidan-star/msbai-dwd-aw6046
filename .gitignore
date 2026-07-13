@@ -8,3 +8,6 @@ __pycache__/
 
 # but keep committed evidence CSVs
 !docs/**/*.csv
+
+# local dev launcher (Claude Code preview)
+.claude/
