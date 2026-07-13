@@ -72,13 +72,57 @@ places they disagree are both the floor's quirk, not ours:
    every sibling has a hyphen) 404'd the naive URL. Fix: URL-quote every key (`b016281`).
    One file out of 171 — enumerate, never pattern-match.
 
+## Part 1 decisions, in business terms
+
+- **Jersey City: kept, tagged `region='JC'`.** Dropping it would make the dataset silently
+  incomplete; mixing it in would pollute the NYC-weather join (the provided weather series is
+  NYC's). Tagging costs one column and keeps every count sliceable — the dashboard defaults to NYC.
+- **Distance: straight-line dock-to-dock, computed free in SQL.** No distance column exists in
+  either era, so `distance_km = ST_DISTANCE(start_geog, end_geog)/1000` in the clean view, NULL
+  when coordinates are missing or zero. A routing API cannot price 320M trips inside a $10 budget;
+  haversine is free arithmetic. **Where it falls short:** it is not the ridden route — it reads ~0
+  for a round trip even though the bike moved — so it is never reported as "miles ridden".
+- **A "day" is the local start date.** Riders decide on NYC wall-clock and NYC weather; the weather
+  table is keyed by NYC-local date. Timestamps were confirmed from samples to be naive local
+  wall-clock, so they parse as `DATETIME` with **no timezone conversion** — loading them as UTC
+  `TIMESTAMP` and converting back would have re-dated every early-morning trip (~4–5 h shift).
+- **Schema reconciliation lives in one view.** Legacy (2013 → Jan 2021: `starttime`,
+  `usertype` Subscriber/Customer, three drifting date formats) and current (Feb 2021 →: `started_at`,
+  `member_casual`, ms-precision) map to one canonical column set in
+  [sql/v_trips_clean.sql](sql/v_trips_clean.sql): Subscriber→member, Customer→casual, unmapped
+  values flagged `'unknown'` rather than dropped; station ids CAST to STRING both eras; legacy gets
+  a deterministic synthetic `ride_id`. Raw stays immutable, so the mapping is reviewable and
+  fixable without re-loading 13 years.
+
 ## Partition granularity: MONTH, not DAY
 
 BigQuery caps a table at 4,000 partitions; the 2013–2026 history spans 4,768 days.
 `PARTITION BY DATE_TRUNC(trip_day, MONTH)` → 157 partitions with years of headroom, and pruning is
 irrelevant anyway for a ~20k-row summary table the dashboard reads whole ([sql/daily.sql](sql/daily.sql)).
 
-## Dashboard go-live verification (2026-07-12)
+## Part 2: why this dashboard
+
+Built for a **non-technical visitor (journalist / city planner)** per [SPEC.md](SPEC.md): every
+chart carries a one-sentence plain-English claim with a number computed from the data shown, not a
+bare axis label. The filters (date range, region, rider type) are the three slices a non-analyst
+actually asks for; bike type is deliberately a chart rather than a filter because the daily grain
+carries `ebike_trip_count` — the dashboard reads a tiny daily table, never 320M raw trips. The
+business hook is chart 4: rain cuts casual rides ~28% vs ~20% for members, and casual riders are
+the higher-margin, promotable segment — that's the weather-aware-promotion lever.
+
+## Dashboard go-live verification (2026-07-12): targets vs actuals
+
+| Spec target | Actual |
+|---|---|
+| Correctness: 5 sampled dates exact vs `daily_trips` | **PASS — all 5 exact** (values below) |
+| Speed: < 3 s warm to default view | **MISSED for full render: ≈ 7.6 s** warm to all five charts painted (see below) |
+| Reach: opens in incognito, no login | **PASS** — `allUsers` has `roles/run.invoker`; loads with no auth prompt |
+| Clarity: one-sentence claim per chart | **PASS** — all five claims computed from live data |
+
+On the speed miss: the cached-BigQuery data path is fast (one query per 6 h, then pandas in
+memory); the 7.6 s is Streamlit's frontend bundle boot plus rendering five ~9.5k-point Vega charts.
+Reported as measured rather than restated to fit the target; cheapest mitigations if it matters:
+thin the daily-line series or `--min-instances=1` before grading.
 
 - Flipped `USE_FALLBACK=0` (revision `citibike-dashboard-00002-vch`); URL unchanged.
 - **5-date correctness check** — values extracted from the *rendered* Vega dataset in the live page
@@ -87,10 +131,8 @@ irrelevant anyway for a ~20k-row summary table the dashboard reads whole ([sql/d
   **all five exact**, full 9,536-row series (2013-06-01 →) present in the browser.
 - All five claims recompute from real data (growth ~6× 2014→2025; peak 65–70 °F; rain −21%;
   casual ~1.4× more rain-sensitive; e-bikes ~72%).
-- **Warm load honesty:** all five charts fully rendered ≈ 7.6 s after navigation on a warm
-  instance — the cached-BigQuery data path is fast, but Streamlit's frontend boot + rendering
-  five ~9.5k-point Vega charts dominates. The <3 s spec target holds for data readiness, not for
-  full first paint; noted rather than hidden.
+- Warm-load measurement method: in-page poll from navigation start until all five `.vega-embed`
+  nodes exist (poll live from 1.9 s, charts complete at 7.6 s).
 
 ## Cost posture
 

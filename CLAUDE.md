@@ -105,9 +105,12 @@ materialized daily table (partitioned by trip_day)`
 - Loads idempotent, keyed by `source_file`.
 
 ## BigQuery objects
-`citibike_raw.trips_legacy`, `citibike_raw.trips_current` (+ `region`, `source_file`) →
-`citibike.v_trips_clean` → `citibike.v_daily_summary` → `citibike.daily_trips`
-(real table, **partitioned by `trip_day`**, one row per trip_day × region × rider_type).
+Raw is split per era × region (loads were per-region source sets; `region` is re-attached in the
+clean view from which table the row came): `citibike_raw.trips_legacy_nyc`, `trips_legacy_jc`,
+`trips_current_nyc`, `trips_current_jc` → `citibike.v_trips_clean` → `citibike.v_daily_summary` →
+`citibike.daily_trips` (real table, **partitioned by `DATE_TRUNC(trip_day, MONTH)`** — BigQuery's
+4,000-partition cap vs 4,768 days of history; see DECISIONS.md — one row per
+trip_day × region × rider_type).
 
 ## Verification (Part 1 "done")
 Counts must reconcile to an **independent** source:
