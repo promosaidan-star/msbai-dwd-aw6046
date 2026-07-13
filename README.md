@@ -8,6 +8,6 @@ affects ridership.
 - **GCP project:** `msbai-dwd-aw6046`
 - **BigQuery objects:** `citibike_raw.trips_legacy`, `citibike_raw.trips_current`,
   `citibike.v_trips_clean`, `citibike.v_daily_summary`, `citibike.daily_trips` (partitioned by `trip_day`)
-- **Dashboard:** _URL pending deploy_
+- **Dashboard (public, no login):** https://citibike-dashboard-826867853591.us-central1.run.app
 - **Decisions:** see [CLAUDE.md](CLAUDE.md) (canonical) and [DECISIONS.md](DECISIONS.md)
 - **Verification evidence:** [docs/verification/](docs/verification/)
