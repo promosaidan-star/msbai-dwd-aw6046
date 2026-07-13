@@ -30,21 +30,23 @@ FROM `{PROJECT}.citibike.daily_trips`
 WHERE rider_type IN ('member', 'casual')
 """
 
-FALLBACK_SQL = """
+# Project-local snapshots (see scratchpad snapshot: weather_daily / fallback_daily_trips are
+# copies of the nyu-datasets tables) so the Cloud Run runtime SA only reads our own project.
+FALLBACK_SQL = f"""
 SELECT date AS trip_day, 'NYC' AS region, 'member' AS rider_type,
        num_member_trips_nyc AS trip_count, num_electric_trips AS ebike_trip_count
-FROM `nyu-datasets.citibike.m_daily_trips`
+FROM `{PROJECT}.citibike.fallback_daily_trips`
 UNION ALL
-SELECT date, 'NYC', 'casual', num_casual_trips_nyc, 0 FROM `nyu-datasets.citibike.m_daily_trips`
+SELECT date, 'NYC', 'casual', num_casual_trips_nyc, 0 FROM `{PROJECT}.citibike.fallback_daily_trips`
 UNION ALL
-SELECT date, 'JC', 'member', num_member_trips_jc, 0 FROM `nyu-datasets.citibike.m_daily_trips`
+SELECT date, 'JC', 'member', num_member_trips_jc, 0 FROM `{PROJECT}.citibike.fallback_daily_trips`
 UNION ALL
-SELECT date, 'JC', 'casual', num_casual_trips_jc, 0 FROM `nyu-datasets.citibike.m_daily_trips`
+SELECT date, 'JC', 'casual', num_casual_trips_jc, 0 FROM `{PROJECT}.citibike.fallback_daily_trips`
 """
 
-WEATHER_SQL = """
+WEATHER_SQL = f"""
 SELECT date, tavg_f, prcp_inches, is_rainy, is_snowy, season
-FROM `nyu-datasets.weather.m_weather_daily_nyc`
+FROM `{PROJECT}.citibike.weather_daily`
 """
 
 
