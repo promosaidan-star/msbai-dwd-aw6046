@@ -105,7 +105,10 @@ def stage_source(key, size):
     zpath = os.path.join(WORK, "src.zip")
 
     print(f"[{key}] downloading {size/1e6:.0f} MB ...", flush=True)
-    with urllib.request.urlopen(S3 + key, timeout=600) as r, open(zpath, "wb") as out:
+    # keys are not URL-safe: the archive contains e.g. 'JC-201708 citibike-tripdata.csv.zip'
+    # (space instead of hyphen) — quote the key before requesting
+    with urllib.request.urlopen(S3 + urllib.parse.quote(key), timeout=600) as r, \
+         open(zpath, "wb") as out:
         shutil.copyfileobj(r, out, length=1 << 20)
 
     entries, seen_members = [], set()
